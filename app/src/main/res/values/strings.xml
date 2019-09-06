@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">BPOM Survey</string>
+    <string name="urls">http://bpom.sis-survey.com</string>
+    <string name="urls_focus">https://matawarga.com/topik/fokus-berita/</string>
+    <string name="urls_video">https://matawarga.com/channel/video</string>
+    <string name="urls_infografis">https://matawarga.com/channel/infografis/</string>
+    <string name="urls_regional">https://matawarga.com/channel/regional</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="err_blank">"Username / Password tidak boleh kosong"</string>
+    <string name="err_no_data">"No Data"</string>
+    <string name="err_d">"Mohon bersabar, sedang dalam pengembangan"</string>
+</resources>
