@@ -18,37 +18,44 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bpom.app.BE;
 import com.bpom.app.R;
-import com.bpom.app.adapters.RespondenAdapter;
+import com.bpom.app.adapters.QuestionAdapter;
 import com.bpom.app.models.areas.GArea;
-import com.bpom.app.models.responden.GResponden;
+import com.bpom.app.models.questions.GQuestions;
 import com.bpom.app.utils.Cons;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RespondenActivity extends AppCompatActivity {
+public class QuestionsActivity extends AppCompatActivity {
 
     BE.LoadingPrimary pd;
     Context c;
 
-    private static final String TAG = "ReadAllActivity";
-    private List<GResponden> lists;
+    private static String TAG;
+    private List<GQuestions> lists;
     private RecyclerView rv;
-    RespondenAdapter adapters;
+    QuestionAdapter adapters;
+    String ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
-        getSupportActionBar().setTitle("Pilih Responden");
+        TAG = getApplicationContext().getClass().getSimpleName();
+        getSupportActionBar().setTitle("List Pertanyaan");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         c = this;
         pd = new BE.LoadingPrimary(c);
 
+        if(getIntent().getExtras()!=null){
+            Bundle bundle = getIntent().getExtras();
+            ids = bundle.getString("id");
+        }
+
         final TextView tvArea = findViewById(R.id.tvArea);
 
         pd.show();
-        AndroidNetworking.get(Cons.API_AREA+Cons.gID)
+        AndroidNetworking.get(Cons.API_QUESTION+ids)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsObjectList(GArea.class, new ParsedRequestListener<List<GArea>>() {
@@ -74,19 +81,19 @@ public class RespondenActivity extends AppCompatActivity {
         rv.setHasFixedSize(true); //agar recyclerView tergambar lebih cepat
         rv.setLayoutManager(new LinearLayoutManager(this)); //menset layout manager sebagai LinearLayout(scroll kebawah)
         lists = new ArrayList<>(); //arraylist untuk menyimpan data mahasiswa
-        adapters = new RespondenAdapter(c,lists);
+        adapters = new QuestionAdapter(c, lists);
         rv.setAdapter(adapters);
 
-        AndroidNetworking.get(Cons.API_RESPONDEN)
+        AndroidNetworking.get(Cons.API_QUESTION+ids)
                 .setPriority(Priority.HIGH)
                 .build()
-                .getAsObjectList(GResponden.class, new ParsedRequestListener<List<GResponden>>() {
+                .getAsObjectList(GQuestions.class, new ParsedRequestListener<List<GQuestions>>() {
                     @Override
-                    public void onResponse(List<GResponden> r) {
+                    public void onResponse(List<GQuestions> r) {
                         pd.dismiss();
                         if(r.size()>0) {
                             lists = r;
-                            adapters = new RespondenAdapter(c,lists);
+                            adapters = new QuestionAdapter(c,lists);
                             rv.setAdapter(adapters);
                             adapters.notifyDataSetChanged();
                         }else {

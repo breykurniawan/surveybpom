@@ -37,7 +37,7 @@ public class DashboardActivity extends AppCompatActivity {
         btnSurvey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(c,SurveyActivity.class));
+                startActivity(new Intent(c,RespondenActivity.class));
             }
         });
         btnMaster.setOnClickListener(new View.OnClickListener() {

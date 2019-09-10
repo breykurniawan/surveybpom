@@ -1,32 +1,27 @@
 package com.bpom.app.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bpom.app.R;
-import com.bpom.app.activities.QuestionsActivity;
-import com.bpom.app.activities.RespondenActivity;
-import com.bpom.app.models.headers.GHeaders;
+import com.bpom.app.models.questions.GQuestions;
 
 import java.util.List;
 
-public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.ViewHolder> {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHolder> {
 
-    private List<GHeaders> lists; //inisialisasi List dengan object GHeaders
+    private List<GQuestions> lists; //inisialisasi List dengan object GQuestions
     Context c;
 
 
     //construktor SurveyAdapter
-    public SurveyAdapter(Context c,List<GHeaders> lists) {
+    public QuestionAdapter(Context c, List<GQuestions> lists) {
         this.c = c;
         this.lists = lists;
     }
@@ -40,9 +35,9 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        GHeaders data = lists.get(position); //inisialisasi object DataMahasiwa
-        holder.mNama.setText(data.getBName());
-        holder.mId.setText(String.valueOf(data.getBId()));
+        GQuestions data = lists.get(position); //inisialisasi object DataMahasiwa
+        holder.mNama.setText(data.getBTitle());
+//        holder.mId.setText(data.getBId());
     }
 
     @Override
@@ -60,18 +55,18 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.ViewHolder
             mNama = itemView.findViewById(R.id.tvName);
             mId = itemView.findViewById(R.id.tvId);
 
-            mNama.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String ids = mId.getText().toString();
+//            mNama.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    String ids = mId.getText().toString();
 //                    Toast.makeText(c, ids, Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(c, QuestionsActivity.class);
-                    Bundle b = new Bundle();
-                    b.putString("id",ids);
-                    i.putExtras(b);
-                    c.startActivity(i);
-                }
-            });
+//                    Intent i = new Intent(c, QuestionsActivity.class);
+//                    Bundle b = new Bundle();
+//                    b.putString("id",ids);
+//                    i.putExtras(b);
+//                    c.startActivity(i);
+//                }
+//            });
         }
     }
 }

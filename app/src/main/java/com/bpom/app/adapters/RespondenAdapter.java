@@ -1,5 +1,7 @@
 package com.bpom.app.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bpom.app.R;
+import com.bpom.app.activities.RespondenActivity;
+import com.bpom.app.activities.SurveyActivity;
 import com.bpom.app.models.responden.GResponden;
 
 import java.util.List;
@@ -16,11 +20,12 @@ import java.util.List;
 public class RespondenAdapter extends RecyclerView.Adapter<RespondenAdapter.ViewHolder> {
 
     private List<GResponden> lists; //inisialisasi List dengan object GResponden
-
+    Context c;
 
     //construktor SurveyAdapter
-    public RespondenAdapter(List<GResponden> lists) {
+    public RespondenAdapter(Context c, List<GResponden> lists) {
         this.lists = lists;
+        this.c = c;
     }
 
     @Override
@@ -49,6 +54,12 @@ public class RespondenAdapter extends RecyclerView.Adapter<RespondenAdapter.View
         public ViewHolder(View itemView) {
             super(itemView);
             mNama = itemView.findViewById(R.id.tvName);
+            mNama.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    c.startActivity(new Intent(c, SurveyActivity.class));
+                }
+            });
         }
     }
 }
