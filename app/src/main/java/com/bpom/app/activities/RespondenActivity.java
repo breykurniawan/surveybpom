@@ -46,37 +46,16 @@ public class RespondenActivity extends AppCompatActivity {
         pd = new BE.LoadingPrimary(c);
 
         final TextView tvArea = findViewById(R.id.tvArea);
-
-        pd.show();
-        AndroidNetworking.get(Cons.API_AREA+Cons.gID)
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsObjectList(GArea.class, new ParsedRequestListener<List<GArea>>() {
-                    @Override
-                    public void onResponse(List<GArea> r) {
-                        if(r.size()>0) {
-                            tvArea.setText(r.get(0).getBArea());
-                        }else {
-                            BE.TShort(getString(R.string.err_no_data));
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError error) {
-                        BE.TShort(error.getErrorDetail());
-                        Log.d(TAG, "onError errorCode : " + error.getErrorCode());
-                        Log.d(TAG, "onError errorBody : " + error.getErrorBody());
-                        Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
-                    }
-                });
+        tvArea.setText("Silahkan pilih target responden anda");
 
         rv = findViewById(R.id.rv);
         rv.setHasFixedSize(true); //agar recyclerView tergambar lebih cepat
         rv.setLayoutManager(new LinearLayoutManager(this)); //menset layout manager sebagai LinearLayout(scroll kebawah)
-        lists = new ArrayList<>(); //arraylist untuk menyimpan data mahasiswa
+        lists = new ArrayList<>();
         adapters = new RespondenAdapter(c,lists);
         rv.setAdapter(adapters);
 
+        pd.show();
         AndroidNetworking.get(Cons.API_RESPONDEN)
                 .setPriority(Priority.HIGH)
                 .build()

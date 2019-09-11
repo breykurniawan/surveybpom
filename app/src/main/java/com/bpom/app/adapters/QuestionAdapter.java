@@ -28,7 +28,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_survey, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_question, parent, false);
         ViewHolder holder = new ViewHolder(v); //inisialisasi ViewHolder
         return holder;
     } //fungsi yang dijalankan saat ViewHolder dibuat
@@ -36,8 +36,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GQuestions data = lists.get(position); //inisialisasi object DataMahasiwa
+        holder.mNo.setText(String.valueOf(position+1)+". ");
         holder.mNama.setText(data.getBTitle());
-//        holder.mId.setText(data.getBId());
     }
 
     @Override
@@ -48,12 +48,12 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView mNama, mId; //inisialisasi variabel
+        TextView mNama, mNo; //inisialisasi variabel
 
         public ViewHolder(View itemView) {
             super(itemView);
+            mNo = itemView.findViewById(R.id.tvNo);
             mNama = itemView.findViewById(R.id.tvName);
-            mId = itemView.findViewById(R.id.tvId);
 
 //            mNama.setOnClickListener(new View.OnClickListener() {
 //                @Override

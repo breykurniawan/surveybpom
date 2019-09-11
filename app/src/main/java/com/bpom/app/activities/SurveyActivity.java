@@ -80,7 +80,7 @@ public class SurveyActivity extends AppCompatActivity {
         rv = findViewById(R.id.rv);
         rv.setHasFixedSize(true); //agar recyclerView tergambar lebih cepat
         rv.setLayoutManager(new LinearLayoutManager(this)); //menset layout manager sebagai LinearLayout(scroll kebawah)
-        lists = new ArrayList<>(); //arraylist untuk menyimpan data mahasiswa
+        lists = new ArrayList<>();
         adapters = new SurveyAdapter(c, lists);
         rv.setAdapter(adapters);
 

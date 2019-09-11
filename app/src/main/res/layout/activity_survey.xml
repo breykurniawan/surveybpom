@@ -13,6 +13,7 @@
         android:text="Selamat datang di sistem survey BPOM" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tvInsert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
