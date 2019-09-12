@@ -27,11 +27,11 @@ public class GQuestions{
 	@SerializedName("b_parent_id")
 	private int bParentId;
 
-	@SerializedName("b_question_option")
-	private String bQuestionOption;
-
 	@SerializedName("b_title")
 	private String bTitle;
+
+	@SerializedName("b_option_list")
+	private String bOptionList;
 
 	@SerializedName("b_question_id")
 	private int bQuestionId;
@@ -98,20 +98,20 @@ public class GQuestions{
 		return bParentId;
 	}
 
-	public void setBQuestionOption(String bQuestionOption){
-		this.bQuestionOption = bQuestionOption;
-	}
-
-	public String getBQuestionOption(){
-		return bQuestionOption;
-	}
-
 	public void setBTitle(String bTitle){
 		this.bTitle = bTitle;
 	}
 
 	public String getBTitle(){
 		return bTitle;
+	}
+
+	public void setBOptionList(String bOptionList){
+		this.bOptionList = bOptionList;
+	}
+
+	public String getBOptionList(){
+		return bOptionList;
 	}
 
 	public void setBQuestionId(int bQuestionId){
@@ -149,8 +149,8 @@ public class GQuestions{
 			",b_description = '" + bDescription + '\'' + 
 			",question_type = '" + questionType + '\'' + 
 			",b_parent_id = '" + bParentId + '\'' + 
-			",b_question_option = '" + bQuestionOption + '\'' + 
 			",b_title = '" + bTitle + '\'' + 
+			",b_option_list = '" + bOptionList + '\'' + 
 			",b_question_id = '" + bQuestionId + '\'' + 
 			",b_survey_id = '" + bSurveyId + '\'' + 
 			",b_is_delete = '" + bIsDelete + '\'' + 

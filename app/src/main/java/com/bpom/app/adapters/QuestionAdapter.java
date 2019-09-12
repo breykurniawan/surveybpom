@@ -1,9 +1,11 @@
 package com.bpom.app.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bpom.app.R;
 import com.bpom.app.models.questions.GQuestions;
+import com.bpom.app.utils.JsonHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -38,6 +45,49 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         GQuestions data = lists.get(position); //inisialisasi object DataMahasiwa
         holder.mNo.setText(String.valueOf(position+1)+". ");
         holder.mNama.setText(data.getBTitle());
+
+        String qt = data.getQuestionType();
+        if(qt.equals("Essay")){
+            holder.mEssay.setVisibility(View.VISIBLE);
+            holder.mAnswer.setVisibility(View.GONE);
+        }else {
+            holder.mEssay.setVisibility(View.GONE);
+            holder.mAnswer.setVisibility(View.VISIBLE);
+            holder.mAnswer.setText(data.getBOptionList());
+        }
+//        holder.mAnswer.setText(data.getBOptionList().get);
+//        Log.d("jsonnya", lists.get(0).getBQuestionOption());
+//        String src = data.getBQuestionOption();
+//            String[] dest = new String[src.length()];
+//            System.arraycopy(src, 0, dest, 0, src.length());
+//            System.out.println(Arrays.toString(dest));
+//            holder.mAnswer.setText(String.valueOf(Arrays.toString(dest)));
+
+//        String src = "{\"Perkotaan\",\"Pedesaan\"}";
+//        String[] dest = new String[src.length()];
+//        System.arraycopy(src, 0, dest, 0, src.length());
+//        Log.d("cek",dest.toString());
+
+
+//        JsonHelper json = JsonHelper.fromStringToJSON(data.getBQuestionOption());
+//        if(null != data.getBOptionList()) {
+//            String src = data.getBOptionList().replace("\"","");
+//            JsonHelper json = JsonHelper.fromStringToJSON(src);
+//            if (json.obj != null) {
+//
+//                // If the String is a JSON array
+//                if (json.isJsonArray) {
+//                    JSONArray jsonArray = (JSONArray) json.obj;
+//                    Log.d("jea", jsonArray.toString());
+//                }
+//                // If it's a JSON object
+//                else {
+//                    JSONObject jsonObject = (JSONObject) json.obj;
+//                    Log.d("jea", jsonObject.toString());
+//                }
+//            }
+//        }
+
     }
 
     @Override
@@ -48,12 +98,17 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView mNama, mNo; //inisialisasi variabel
+        TextView mNama, mNo, mAnswer; //inisialisasi variabel
+        LinearLayout mEssay;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mNo = itemView.findViewById(R.id.tvNo);
             mNama = itemView.findViewById(R.id.tvName);
+            mAnswer = itemView.findViewById(R.id.tvAnswer);
+            mEssay = itemView.findViewById(R.id.llAnswerEssay);
+
+
 
 //            mNama.setOnClickListener(new View.OnClickListener() {
 //                @Override
