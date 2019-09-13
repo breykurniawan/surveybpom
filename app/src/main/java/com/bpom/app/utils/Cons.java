@@ -15,6 +15,7 @@ public class Cons {
     public static final String API_HEADER = BASE_INDEX + "questioner?b_survey_id=";
     public static final String API_RESPONDEN = BASE_INDEX + "responden";
     public static final String API_QUESTION = BASE_INDEX + "question?b_id_questioner=";
+    public static final String API_ANSWER = BASE_INDEX + "option?b_question_id=";
 
     //api-properties
     public static final String API_HEADER_K = "Content-Type";
