@@ -43,7 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
         btnMaster.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(c, getString(R.string.err_d), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(c,DownloadActivity.class));
             }
         });
         btnSync.setOnClickListener(new View.OnClickListener() {

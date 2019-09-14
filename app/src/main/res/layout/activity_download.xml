@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SurveyActivity">
+
+    <TextView
+        android:id="@+id/tvLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18dp"
+        android:lines="2"
+        android:text="Loading..." />
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:visibility="invisible"
+        android:progress="0"
+        android:progressDrawable="@drawable/custom_progress"
+        style="?android:progressBarStyleHorizontal" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvInsert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="insert"
+        android:padding="15dp"
+        android:textStyle="bold"
+        android:text="Insert Responden"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_save_black_24dp" />
+</FrameLayout>
