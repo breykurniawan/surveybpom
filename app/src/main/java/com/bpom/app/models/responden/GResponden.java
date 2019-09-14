@@ -75,6 +75,10 @@ public class GResponden{
 	@SerializedName("b_is_delete")
 	private int bIsDelete;
 
+	public GResponden() {
+		
+	}
+
 	public void setBAreaLevelOneId(int bAreaLevelOneId){
 		this.bAreaLevelOneId = bAreaLevelOneId;
 	}

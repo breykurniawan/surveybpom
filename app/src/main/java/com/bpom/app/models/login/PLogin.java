@@ -6,10 +6,12 @@ public class PLogin{
 	private boolean status;
 
 	public void setData(Data data){
+
 		this.data = data;
 	}
 
-	public Data getData(){
+	public Data getData()
+	{
 		return data;
 	}
 

@@ -1,6 +1,8 @@
 package com.bpom.app.activities;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bpom.app.BE;
 import com.bpom.app.R;
+import com.bpom.app.adapters.DatabaseAdapter;
 import com.bpom.app.adapters.QuestionAdapter;
 import com.bpom.app.models.areas.GArea;
 import com.bpom.app.models.questions.GQuestions;
@@ -34,6 +37,8 @@ public class QuestionsActivity extends AppCompatActivity {
     private static String TAG;
     private List<GQuestions> lists;
     private RecyclerView rv;
+
+    private DatabaseAdapter dbCon;
     QuestionAdapter adapters;
     String ids;
 
@@ -60,7 +65,10 @@ public class QuestionsActivity extends AppCompatActivity {
         rv.setAdapter(adapters);
 
         pd.show();
-        AndroidNetworking.get(Cons.API_QUESTION+ids)
+        dbCon=new DatabaseAdapter(this);
+
+        loadListGQuestionsFT();
+       /* AndroidNetworking.get(Cons.API_QUESTION+ids)
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsObjectList(GQuestions.class, new ParsedRequestListener<List<GQuestions>>() {
@@ -83,7 +91,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         Log.d(TAG, "onError errorBody : " + error.getErrorBody());
                         Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                     }
-                });
+                });*/
     }
 
     @Override
@@ -97,4 +105,50 @@ public class QuestionsActivity extends AppCompatActivity {
         }
         return true;
     }
+    public void loadListGQuestionsFT(){
+        SQLiteDatabase rdb = dbCon.getReadableDatabase();
+        /*SELECT * FROM v_question a
+			LEFT JOIN v_questioner b ON a.b_questioner_id = b.b_id
+			WHERE a.b_survey_id = 37 and a.b_questioner_id = ?
+			ORDER BY b_questioner_name,b_parent_id,b_position*/
+        String query="SELECT * FROM "+ DatabaseAdapter.TB_V_QUESTION
+                +" WHERE "+DatabaseAdapter.b_survey_id+"='"+Cons.gID+"'"
+                +" AND "+DatabaseAdapter.b_id_questioner+"='"+ids+"'"
+                +" ORDER BY "+DatabaseAdapter.b_name_questioner
+                +","+DatabaseAdapter.b_parent_id
+                +","+DatabaseAdapter.b_position;
+        Cursor cur=rdb.rawQuery(query,null);
+        try {
+            if (cur.moveToFirst()) {
+                do {
+                    GQuestions rows=new GQuestions();
+                    rows.setBNameQuestioner(cur.getString(cur.getColumnIndex(DatabaseAdapter.b_name_questioner)));
+                    rows.setBUsersId(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_users_id)));
+                    rows.setBPosition(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_position)));
+                    rows.setBIdQuestioner(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_id_questioner)));
+                    rows.setBDescription(cur.getString(cur.getColumnIndex(DatabaseAdapter.b_description)));
+                    rows.setQuestionType(cur.getString(cur.getColumnIndex(DatabaseAdapter.question_type)));
+                    rows.setBParentId(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_parent_id)));
+                    rows.setBTitle(cur.getString(cur.getColumnIndex(DatabaseAdapter.b_title)));
+                    rows.setBOptionList(cur.getString(cur.getColumnIndex(DatabaseAdapter.b_option_list)));
+                    rows.setBQuestionId(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_question_id)));
+                    rows.setBSurveyId(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_survey_id)));
+                    rows.setBIsDelete(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_is_delete)));
+                    lists.add(rows);
+                }while (cur.moveToNext());
+                adapters = new QuestionAdapter(c,lists);
+                rv.setAdapter(adapters);
+                adapters.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+            pd.dismiss();
+            BE.TShort(e.toString());
+            Log.d(TAG, "onError errorCode : " + e.toString());
+            return;
+        }
+        pd.dismiss();
+        cur.close();
+        rdb.close();
+    }
+
 }

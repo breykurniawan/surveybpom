@@ -38,7 +38,9 @@ public class Cons {
     public static final String STOCKS_PRICE = "f_stocks_price";
 
     //get prefs
-//    public static final String gID = Prefs.getString(USER_ID,null);
-    public static final String gID = "37";
+    public static final String gID = Prefs.getString(USER_ID,null);
+    //public static final String gID = "37";
+
+    public static final boolean DEBUG_MODE = false;
 
 }

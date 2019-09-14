@@ -32,11 +32,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         c = this;
         pd = new BE.LoadingPrimary(c);
-        btnLogin = (Button)findViewById(R.id.btnSignIn);
+        btnLogin = findViewById(R.id.btnSignIn);
         etUser = findViewById(R.id.etUser);
         etPass = findViewById(R.id.etPass);
-        etUser.setText("jabar01");
-        etPass.setText("jabar01");
+        /*etUser.setText("jabar01");
+        etPass.setText("jabar01");*/
+        etUser.setText("fadli");
+        etPass.setText("fadli");
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,10 +58,10 @@ public class LoginActivity extends AppCompatActivity {
                                     pd.dismiss();
                                     if (user.isStatus()) {
                                         Prefs.putString("is_login","1");
-                                        Prefs.putString(Cons.USER_ID, String.valueOf(user.getData().getBId()));
-                                        Prefs.putString(Cons.USER_NAME, user.getData().getBUserName());
-                                        Prefs.putString(Cons.USER_PERSON, user.getData().getBFullName());
-                                        Prefs.putString(Cons.USER_EMAIL, user.getData().getBEmail());
+                                        Prefs.putString(Cons.USER_ID, String.valueOf(user.getData().getB_id()));
+                                        Prefs.putString(Cons.USER_NAME, user.getData().getB_user_name());
+                                        Prefs.putString(Cons.USER_PERSON, user.getData().getB_full_name());
+                                        Prefs.putString(Cons.USER_EMAIL, user.getData().getB_email());
                                         startActivity(new Intent(c, DashboardActivity.class));
                                         finish();
                                     } else {
