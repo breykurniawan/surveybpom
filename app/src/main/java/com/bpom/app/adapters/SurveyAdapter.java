@@ -68,6 +68,7 @@ public class SurveyAdapter extends RecyclerView.Adapter<SurveyAdapter.ViewHolder
                     Intent i = new Intent(c, QuestionsActivity.class);
                     Bundle b = new Bundle();
                     b.putString("id",ids);
+                    System.out.println("--------"+ids);
                     i.putExtras(b);
                     c.startActivity(i);
                 }

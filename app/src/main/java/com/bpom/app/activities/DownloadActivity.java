@@ -25,6 +25,7 @@ import com.androidnetworking.interfaces.ParsedRequestListener;
 import com.bpom.app.BE;
 import com.bpom.app.R;
 import com.bpom.app.adapters.DatabaseAdapter;
+import com.bpom.app.models.answers.GAnswers;
 import com.bpom.app.models.areas.GArea;
 import com.bpom.app.models.headers.GHeaders;
 import com.bpom.app.models.questions.GQuestions;
@@ -48,6 +49,7 @@ public class DownloadActivity extends AppCompatActivity {
     private List<GHeaders> listsGHeaders;
     private List<GArea> listsGArea;
     private List<GQuestions> listsGQuestions;
+    private List<GAnswers> listsGAnswers;
     private boolean saveFlags=false;
 
     private DatabaseAdapter dbCon;
@@ -67,12 +69,13 @@ public class DownloadActivity extends AppCompatActivity {
         listsGHeaders = new ArrayList<>();
         listsGArea = new ArrayList<>();
         listsGQuestions = new ArrayList<>();
+        listsGAnswers = new ArrayList<>();
         ////////////////////////////////////
         pd.show();
         fabs = findViewById(R.id.fab);
         tvLoad=findViewById(R.id.tvLoad);
         progressBar=findViewById(R.id.progressBar);
-        progressBar.setMax(4);
+        progressBar.setMax(5);
         dbCon=new DatabaseAdapter(this);
         LOAD_RESPONDEN();
 
@@ -91,7 +94,8 @@ public class DownloadActivity extends AppCompatActivity {
                                     if(listsGResponden.size()>0 &&
                                             listsGHeaders.size()>0 &&
                                             listsGQuestions.size()>0 &&
-                                            listsGArea.size()>0)
+                                            listsGArea.size()>0 &&
+                                            listsGAnswers.size()>0)
                                         saveFlags=true;
 
                                     tvLoad.setText("User waiting...");
@@ -203,11 +207,11 @@ public class DownloadActivity extends AppCompatActivity {
                     if(r.size()>0) {
                         listsGQuestions = r;
                         progressBar.setProgress(4);
+                        LOAD_ANSWER();
                     }else {
                         saveFlags=false;
                         BE.TShort(getString(R.string.err_no_data));
                     }
-                    pd.dismiss();
                 } @Override
                 public void onError(ANError error) {
                     saveFlags=false;
@@ -218,6 +222,32 @@ public class DownloadActivity extends AppCompatActivity {
                     Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                 }
         });
+    }
+    public void LOAD_ANSWER(){
+        AndroidNetworking.get(Cons.API_ANSWER)
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsObjectList(GAnswers.class, new ParsedRequestListener<List<GAnswers>>() {
+                    @Override
+                    public void onResponse(List<GAnswers> r) {
+                        if(r.size()>0) {
+                            listsGAnswers = r;
+                            progressBar.setProgress(5);
+                        }else {
+                            saveFlags=false;
+                            BE.TShort(getString(R.string.err_no_data));
+                        }
+                        pd.dismiss();
+                    } @Override
+                    public void onError(ANError error) {
+                        saveFlags=false;
+                        pd.dismiss();
+                        BE.TShort(error.getErrorDetail());
+                        Log.d(TAG, "onError errorCode : " + error.getErrorCode());
+                        Log.d(TAG, "onError errorBody : " + error.getErrorBody());
+                        Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
+                    }
+                });
     }
 
     @Override
@@ -255,10 +285,12 @@ public class DownloadActivity extends AppCompatActivity {
             wdb.execSQL("DROP TABLE IF EXISTS '" + dbCon.TB_V_QUESTIONER + "'");
             wdb.execSQL("DROP TABLE IF EXISTS '" + dbCon.TB_V_QUESTION + "'");
             wdb.execSQL("DROP TABLE IF EXISTS '" + dbCon.TB_B_AREA + "'");
+            wdb.execSQL("DROP TABLE IF EXISTS '" + dbCon.TB_B_ANSWER + "'");
             wdb.execSQL(dbCon.CREATE_TB_V_RESPONDEN);
             wdb.execSQL(dbCon.CREATE_TB_V_QUESTIONER);
             wdb.execSQL(dbCon.CREATE_TB_V_QUESTION);
             wdb.execSQL(dbCon.CREATE_TB_B_AREA);
+            wdb.execSQL(dbCon.CREATE_TB_B_ANSWER);
         }catch (Exception e){
             BE.TShort(e.toString());
             Log.d(TAG, "onError errorCode : " + e.toString());
@@ -470,6 +502,37 @@ public class DownloadActivity extends AppCompatActivity {
 
             }
         }
+
+
+
+        int sizes5=listsGAnswers.size();
+        for(int i=0;i<sizes5;i++){
+            GAnswers rows=listsGAnswers.get(i);
+            String query = "INSERT INTO "+dbCon.TB_B_ANSWER+" ("
+                    +dbCon.b_id+","
+                    +dbCon.b_question_id+","
+                    +dbCon.b_delete_date+","
+                    +dbCon.b_option+","
+                    +dbCon.b_is_delete
+                    +") VALUES ('"
+                    +rows.getBId()+"','"
+                    +rows.getBQuestionId()+"','"
+                    +rows.getBDeleteDate()+"','"
+                    +rows.getBOption()+"','"
+                    +rows.getBIsDelete()
+                    + "')";
+            try {
+                wdb.execSQL(query);
+            }catch (Exception e){
+                BE.TShort(e.toString());
+                Log.d(TAG, "onError errorCode : " + e.toString());
+            }finally {
+
+            }
+        }
+
+
+
         String downquery = "INSERT INTO "+dbCon.TB_SETTING+" ("+dbCon.skey+","+dbCon.svalue+") VALUES ('downloads','downloads')";
         wdb.execSQL(downquery);
         wdb.close();

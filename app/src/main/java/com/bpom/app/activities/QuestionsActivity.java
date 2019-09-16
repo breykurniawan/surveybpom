@@ -1,6 +1,7 @@
 package com.bpom.app.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +24,12 @@ import com.bpom.app.BE;
 import com.bpom.app.R;
 import com.bpom.app.adapters.DatabaseAdapter;
 import com.bpom.app.adapters.QuestionAdapter;
+import com.bpom.app.models.answers.GAnswers;
 import com.bpom.app.models.areas.GArea;
+import com.bpom.app.models.q_a_data.QuestionAnswer;
 import com.bpom.app.models.questions.GQuestions;
 import com.bpom.app.utils.Cons;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +41,12 @@ public class QuestionsActivity extends AppCompatActivity {
 
     private static String TAG;
     private List<GQuestions> lists;
+    public List<QuestionAnswer> answersLists=new ArrayList<>();
+    FloatingActionButton fabs;
     private RecyclerView rv;
-
     private DatabaseAdapter dbCon;
     QuestionAdapter adapters;
     String ids;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +63,13 @@ public class QuestionsActivity extends AppCompatActivity {
         }
 
         rv = findViewById(R.id.rv);
-        rv.setHasFixedSize(true); //agar recyclerView tergambar lebih cepat
+        //rv.setHasFixedSize(true); //agar recyclerView tergambar lebih cepat
         rv.setLayoutManager(new LinearLayoutManager(this)); //menset layout manager sebagai LinearLayout(scroll kebawah)
+        rv.getRecycledViewPool().setMaxRecycledViews(1, 10000);
         lists = new ArrayList<>();
-        adapters = new QuestionAdapter(c, lists);
-        rv.setAdapter(adapters);
+        /*adapters = new QuestionAdapter(this,c, lists);
+        rv.getRecycledViewPool().setMaxRecycledViews(1, 10000);
+        rv.setAdapter(adapters);*/
 
         pd.show();
         dbCon=new DatabaseAdapter(this);
@@ -92,6 +99,26 @@ public class QuestionsActivity extends AppCompatActivity {
                         Log.d(TAG, "onError errorDetail : " + error.getErrorDetail());
                     }
                 });*/
+
+        fabs = findViewById(R.id.fab);
+        fabs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(c)
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle("Keluar")
+                        .setMessage("Yakin untuk keluar dari akun?")
+                        .setPositiveButton("Ya",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                                        int which) {
+                                        adapters._saveDataFT();
+                                    }
+
+                                }).setNegativeButton("Tidak", null).show();
+            }
+        });
     }
 
     @Override
@@ -135,10 +162,9 @@ public class QuestionsActivity extends AppCompatActivity {
                     rows.setBSurveyId(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_survey_id)));
                     rows.setBIsDelete(cur.getInt(cur.getColumnIndex(DatabaseAdapter.b_is_delete)));
                     lists.add(rows);
+                    //adapters.addItem(rows);
                 }while (cur.moveToNext());
-                adapters = new QuestionAdapter(c,lists);
-                rv.setAdapter(adapters);
-                adapters.notifyDataSetChanged();
+
             }
         }catch (Exception e){
             pd.dismiss();
@@ -149,6 +175,10 @@ public class QuestionsActivity extends AppCompatActivity {
         pd.dismiss();
         cur.close();
         rdb.close();
+        answersLists=new ArrayList<>(lists.size());
+        adapters = new QuestionAdapter(this,c,lists);
+        rv.setAdapter(adapters);
+        adapters.notifyDataSetChanged();
     }
 
 }

@@ -77,7 +77,9 @@ public class DashboardActivity extends AppCompatActivity {
                 btnMaster.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(c, DownloadActivity.class));
+                        Intent intents = new Intent();
+                        intents.setClass(getBaseContext(), DownloadActivity.class);
+                        startActivityForResult(intents,101);
                     }
                 });
                 btnSync.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +170,7 @@ public class DashboardActivity extends AppCompatActivity {
                             startActivity(new Intent(c,RespondenActivity.class));
                         }
                     });
-                    btnMaster.setTextColor(Color.parseColor("#0288d1"));
+                    btnSurvey.setTextColor(Color.parseColor("#ffffff"));
                     btnMaster.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -182,7 +184,7 @@ public class DashboardActivity extends AppCompatActivity {
                             Toast.makeText(c, getString(R.string.err_d), Toast.LENGTH_SHORT).show();
                         }
                     });
-                    btnMaster.setTextColor(Color.parseColor("#0288d1"));
+                    btnSync.setTextColor(Color.parseColor("#ffffff"));
                 }
 
             }else if(resultCode==2){

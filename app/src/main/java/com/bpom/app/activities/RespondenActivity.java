@@ -105,8 +105,8 @@ public class RespondenActivity extends AppCompatActivity {
 
         /*SELECT * from v_responden a
         LEFT JOIN b_users_baru b on a.b_staff_id = b.b_id*/
-        String query="SELECT * FROM "+ DatabaseAdapter.TB_V_RESPONDEN
-                +" WHERE "+DatabaseAdapter.b_id+"='"+Cons.gID+"'";
+        String query="SELECT * FROM "+ DatabaseAdapter.TB_V_RESPONDEN;
+                /*+" WHERE "+DatabaseAdapter.b_id+"='"+Cons.gID+"'";*/
         Cursor cur=rdb.rawQuery(query,null);
         try {
             if (cur.moveToFirst()) {
